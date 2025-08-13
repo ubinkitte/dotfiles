@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<labwc_config>
+	<desktops number="4" />
+
+	<keyboard>
+		<keybind key="W-d">
+			<action name="Execute" command="fuzzel" />
+		</keybind>
+		<keybind key="C-A-t">
+			<action name="Execute" command="alacritty" />
+		</keybind>
+		<keybind key="XF86AudioMute">
+			<action name="Execute" command="amixer set Master toggle" />
+		</keybind>
+		<keybind key="XF86AudioRaiseVolume">
+			<action name="Execute" command="amixer set Master 5%+" />
+		</keybind>
+		<keybind key="XF86AudioLowerVolume">
+			<action name="Execute" command="amixer set Master 5%-" />
+		</keybind>
+		<keybind key="XF86MonBrightnessUp">
+			<action name="Execute" command="brightnessctl set 10%+" />
+		</keybind>
+		<keybind key="XF86MonBrightnessDown">
+			<action name="Execute" command="brightnessctl set 10%-" />
+		</keybind>
+
+		<keybind key="W-1">
+			<action name="GoToDesktop" to="1" />
+		</keybind>
+		<keybind key="W-2">
+			<action name="GoToDesktop" to="2" />
+		</keybind>
+		<keybind key="W-3">
+			<action name="GoToDesktop" to="3" />
+		</keybind>
+		<keybind key="W-4">
+			<action name="GoToDesktop" to="4" />
+		</keybind>
+
+
+		<snapping>
+			<topMaximize>no</topMaximize>
+		</snapping>
+	</keyboard>
+</labwc_config>

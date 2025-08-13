@@ -1,0 +1,44 @@
+* {
+  color: #fff;
+}
+
+window#waybar.top {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+window#waybar.bottom {
+  background-color: #eee;
+}
+
+#custom-power {
+  margin-left: 10px;
+}
+
+#battery {
+  margin-right: 10px;
+}
+
+#clock {
+  color: #000;
+}
+
+#custom-notification {
+  color: #000;
+}
+
+#custom-os_button {
+  color: #207fff;
+  padding-left: 10px;
+  padding-right: 4px;
+  font-size: 24px;
+}
+
+#taskbar {
+  background-color: #eeeeee;
+  border-radius: 0.5rem;
+}
+
+#taskbar button:hover {
+  background-color: #f7f7f7;
+  outline-width: 1px;
+}
