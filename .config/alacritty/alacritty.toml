@@ -1,6 +1,11 @@
+live_config_reload = true
+
 [window]
 padding = { x = 6, y = 4 }
-opacity = 0.6
+opacity = 0.4
+# I think labwc does not support blur
+# blur = true
+
 
 [font]
 normal = { family = "ZedMono Nerd Font", style = "Regular" }
