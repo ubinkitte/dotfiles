@@ -21,12 +21,15 @@
       "on-click": "wlogout"
     },
     "cpu": {
+      "interval": 2,
       "format": "  {}%"
     },
     "memory": {
+      "interval": 2,
       "format": "  {}%"
     },
     "backlight": {
+      "interval": 2,
       "format": "󰃞  {}%"
     },
     "pulseaudio": {
@@ -66,7 +69,7 @@
         "critical": 15
       },
       "format": "{icon} {capacity}%",
-      "format-charging": "󱠴 {capacity}%",
+      "format-charging": "󰂄 {capacity}%",
       "format-icons": ["󰁻", "󰁼", "󰁾", "󰂀", "󰂂", "󰁹"]
     },
     "battery#bat2": {
@@ -94,10 +97,10 @@
     },
 
     "clock": {
-      "format": "      {:%R\n %d.%m.%Y}",
+      "format": "      {:%R\n %Y/%m/%d}",
       "tooltip-format": "<tt><small>{calendar}</small></tt>",
       "calendar": {
-        "mode": "year",
+        "mode": "month",
         "mode-mon-col": 3,
         "weeks-pos": "right",
         "on-scroll": 1,

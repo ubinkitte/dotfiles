@@ -24,6 +24,10 @@
 		<keybind key="XF86MonBrightnessDown">
 			<action name="Execute" command="brightnessctl set 10%-" />
 		</keybind>
+		<keybind key="XF86LaunchA">
+			<action name="ToggleFullscreen"/>
+		</keybind>
+	
 
 		<keybind key="W-1">
 			<action name="GoToDesktop" to="1" />

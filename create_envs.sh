@@ -5,6 +5,7 @@ config_dirs=(
     "labwc"
     "swaylock"
     "waybar"
+    "nvim"
 )
 
 for name in "${config_dirs[@]}"; do
