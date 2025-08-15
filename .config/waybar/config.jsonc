@@ -77,7 +77,7 @@
     }
   },
   {
-    "layer": "background",
+    "layer": "top",
     "position": "bottom",
     "height": 36,
     "spacing": 5,
