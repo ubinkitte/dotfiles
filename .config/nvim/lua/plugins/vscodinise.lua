@@ -48,4 +48,11 @@ return {
 		},
 		version = "^1.0.0", -- optional: only update when a new 1.x version is released
 	},
+	{
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = true
+    -- use opts = {} for passing setup options
+    -- this is equivalent to setup({}) function
+}
 }

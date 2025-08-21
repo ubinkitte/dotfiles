@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <labwc_config>
 	<desktops number="4" />
-
 	<keyboard>
 		<keybind key="W-d">
 			<action name="Execute" command="fuzzel" />
