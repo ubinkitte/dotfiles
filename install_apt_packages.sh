@@ -21,6 +21,10 @@ packages=(
     swaylock
     waybar
     wlogout
+
+    brightnessctl
+    alsa-utils
+
 )
 
 apt update
