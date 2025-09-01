@@ -1,7 +1,7 @@
 - hosts: local
   become: true
   tasks:
-    - name: Packages
+    - name: Install apt packages
       apt:
         name:
           - neovim
@@ -30,18 +30,57 @@
         state: present
         update_cache: yes
 
-    - name: dotfiles
+    - name: Download code
+      get_url:
+        url: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+        dest: "/tmp/code.deb"
+        mode: "0644"
+    - name: Install code
+      apt:
+        deb: "/tmp/code.deb"
+    - name: Download vivaldi
+      get_url:
+        url: "https://downloads.vivaldi.com/stable/vivaldi-stable_amd64.deb"
+        dest: "/tmp/vivaldi.deb"
+        mode: "0644"
+
+
+    - name: Create $HOME/.config dir
       file:
         path: "{{ lookup('env', 'HOME')}}/.config"
         state: directory
-        mode: '0755'
-    - name: labwc
+        mode: "0755"
+
+    # Start linking
+    - name: Link alacritty
+      file:
+        src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/alacritty"
+        dest: "{{ lookup('env', 'HOME')}}/.config/alacritty"
+        state: link
+        force: yes
+
+    - name: Link labwc
       file:
         src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/labwc"
         dest: "{{ lookup('env', 'HOME') }}/.config/labwc"
         state: link
         force: yes
-    - name: waybar
+
+    - name: Link nvim
+      file:
+        src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/nvim"
+        dest: "{{ lookup('env', 'HOME')}}/.config/nvim"
+        state: link
+        force: yes
+
+    - name: Link swaylock
+      file:
+        src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/swaylock"
+        dest: "{{ lookup('env', 'HOME')}}/.config/swaylock"
+        state: link
+        force: yes
+
+    - name: Link waybar
       file:
         src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/waybar"
         dest: "{{ lookup('env', 'HOME')}}/.config/waybar"
