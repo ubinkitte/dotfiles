@@ -15,10 +15,8 @@ fi
 
 if ! [ -d "$DEST" ]; then
 	git clone "$REPO" "$DEST"
-	cd "$DEST"
 else
-	cd "$DEST"
-	git pull
+	cd "$DEST" && git pull
 fi
 
-ansible-playbook -i hosts.ini setup.yml -k
+cd "$DEST" && ansible-playbook -i hosts.ini setup.yml -k
