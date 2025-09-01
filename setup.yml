@@ -1,0 +1,49 @@
+- hosts: local
+  become: true
+  tasks:
+    - name: Packages
+      apt:
+        name:
+          - neovim
+          - build-essential
+          - zsh
+          - python3-full
+          - python3-pip
+
+          - brightnessctl
+          - alsa-utils
+          - network-manager-gnome
+
+          - alacritty
+          - fcitx5-mozc
+          - kdeconnect
+          - pcmanfm
+
+          - plasma-desktop
+          - labwc
+          - sway-notification-center
+          - swaybg
+          - swayidle
+          - swaylock
+          - waybar
+          - wlogout
+        state: present
+        update_cache: yes
+
+    - name: dotfiles
+      file:
+        path: "{{ lookup('env', 'HOME')}}/.config"
+        state: directory
+        mode: '0755'
+    - name: labwc
+      file:
+        src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/labwc"
+        dest: "{{ lookup('env', 'HOME') }}/.config/labwc"
+        state: link
+        force: yes
+    - name: waybar
+      file:
+        src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/waybar"
+        dest: "{{ lookup('env', 'HOME')}}/.config/waybar"
+        state: link
+        force: yes
