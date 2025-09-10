@@ -1,20 +1,18 @@
 # UBinKitte's dotfiles
 
-Repository of UBinKitte's dotfiles. A minimal Wayland environment powerd by labwc with some elegance.   
+Repository of UBinKitte's dotfiles. A minimal Wayland environment powerd by labwc with some elegance.  
 
-UBinKitteのdotfileたちです。labwcを使用した最小限かつエレガンスなWayland環境。
+UBinKitteのdotfileたちです。labwcを使用した最小限かつエレガンスなWayland環境+サブのKDE Plasma。
 
 ## Getting started
 
-### Ubuntu (or Lubuntu) 24.04 LTS
+### Ubuntu 24.04 LTS
 
-`Bash` and `curl` are required. You may `chmod +x` to run script files.  
-`Bash`と`curl`が必要です。スクリプトファイルに実行権限を与える必要があるかもしれません。
+`sudo`, `Bash` and `curl` are required.
+`sudo`と`Bash`、`curl`が必要です。
 
-0. `apt install -y bash curl`
-1. `./create_envs.sh`
-2. `./install_apt_packages.sh`
-3. `./install_with_curl.sh`
+0. Add yourself sudoers
+1. curl -sL https://raw.githubusercontent.com/NP-F/dotfiles/main/bootstrap.sh | bash
 
 ### Not automated steps
 

@@ -4,6 +4,7 @@ REPO="https://github.com/NP-F/dotfiles.git"
 DEST="$HOME/dotfiles"
 
 sudo apt update
+sudo add-apt-repository -y universe
 
 if ! command -v ansible; then
 	sudo apt install -y ansible
@@ -19,4 +20,4 @@ else
 	cd "$DEST" && git pull
 fi
 
-cd "$DEST" && ansible-playbook -i hosts.ini setup.yml -k
+cd "$DEST" && ansible-playbook -i hosts.ini setup.yml -K
