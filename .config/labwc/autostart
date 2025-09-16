@@ -1,4 +1,5 @@
 waybar >/dev/null 2>&1 &
+# sfwbar --config $HOME/.config/sfwbar/w10.config  >/dev/null 2>&1 &
 fcitx5 >/dev/null &
 swaybg -i $(find "$HOME/Wallpapers" -type f | shuf -n 1) -m fill &
 swaync >/dev/null &

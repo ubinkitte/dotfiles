@@ -58,8 +58,8 @@
           - swaybg
           - swayidle
           - swaylock
-          # - waybar
-          - sfwbar
+          - waybar
+          # - sfwbar
           - wlogout
           - pulseaudio
         state: present
