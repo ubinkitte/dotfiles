@@ -1,0 +1,45 @@
+- hosts: local
+  become: true
+  become_method: sudo
+  become_user: root
+  tasks:
+      - name: Ubuntu apt packages
+        import_tasks: distros/ubuntu/apt-packages.yml
+        when: ansible_facts['ansible_distribution'] == "Ubuntu"
+
+      - name: Alpine apk packages
+        import_tasks: distros/alpine/apk-packages.yml
+        when: ansible_facts['ansible_distribution'] == "Alpine"
+
+      - name: Create ~/.config dir
+        file:
+            path: "{{ lookup('env', 'HOME')}}/.config"
+            state: directory
+            mode: "0755"
+
+      # Start linking
+      - name: Create symlink dir under ~/.config
+        file:
+            src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/{{ item }}"
+            dest: "{{ lookup('env', 'HOME')}}/.config/{{ item }}"
+            state: link
+            force: yes
+        loop:
+            - alacritty
+            - fcitx5
+            - labwc
+            - nvim
+            - swaylock
+            - waybar
+      - name: Link other config files
+        file:
+            src: "{{ lookup('env', 'HOME') }}/dotfiles/{{ item.src }}"
+            dest: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
+            state: link
+            force: yes
+        loop:
+            - {
+                  { src: "common/.fluxbox", dest: ".fluxbox" },
+                  { src: "common/.xinitrc", dest: ".xinitrc" },
+                  { src: "common/.xprofile", dest: ".xprofile" },
+              }

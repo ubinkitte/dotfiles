@@ -1,0 +1,62 @@
+tasks:
+  - name: Download code
+    get_url:
+      url: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+      dest: "/tmp/code.deb"
+      mode: "0644"
+  - name: Install code
+    apt:
+      deb: "/tmp/code.deb"
+      state: present
+  - name: Download vivaldi
+    get_url:
+      url: "https://downloads.vivaldi.com/stable/vivaldi-stable_amd64.deb"
+      dest: "/tmp/vivaldi.deb"
+      mode: "0644"
+  - name: Install vivaldi
+    apt:
+      deb: "/tmp/vivaldi.deb"
+      state: present
+
+  - name: Add ulauncher repo
+    apt_repository:
+      repo: ppa:agornostal/ulauncher
+      state: present
+  - name: Install apt packages
+    apt:
+      name:
+        - neovim
+        - build-essential
+        - zsh
+        - python3-full
+        - python3-pip
+        - podman
+        - pipx
+
+        - brightnessctl
+        - alsa-utils
+        # - iwd
+        - fonts-noto-cjk-extra
+        - fonts-noto-color-emoji
+
+        - alacritty
+        - fcitx5-mozc
+        - kdeconnect
+        - nemo
+
+        - fluxbox
+        # - tint2
+        - picom
+        - xinit
+
+        - labwc
+        - sway-notification-center
+        - swaybg
+        - swayidle
+        - swaylock
+        - waybar
+        # - sfwbar
+        - wlogout
+        - pulseaudio
+      state: present
+      update_cache: yes
