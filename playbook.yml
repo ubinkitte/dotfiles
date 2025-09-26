@@ -5,11 +5,11 @@
   tasks:
       - name: Ubuntu apt packages
         import_tasks: distros/ubuntu/apt-packages.yml
-        when: ansible_facts['ansible_distribution'] == "Ubuntu"
+        when: ansible_facts['distribution'] == "Ubuntu"
 
       - name: Alpine apk packages
         import_tasks: distros/alpine/apk-packages.yml
-        when: ansible_facts['ansible_distribution'] == "Alpine"
+        when: ansible_facts['distribution'] == "Alpine"
 
       - name: Create ~/.config dir
         file:
@@ -20,8 +20,8 @@
       # Start linking
       - name: Create symlink dir under ~/.config
         file:
-            src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/{{ item }}"
-            dest: "{{ lookup('env', 'HOME')}}/.config/{{ item }}"
+            src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/{{ item }}/"
+            dest: "{{ lookup('env', 'HOME')}}/.config/{{ item }}/"
             state: link
             force: yes
         loop:
@@ -37,9 +37,8 @@
             dest: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
             state: link
             force: yes
-        loop:
-            - {
-                  { src: "common/.fluxbox", dest: ".fluxbox" },
-                  { src: "common/.xinitrc", dest: ".xinitrc" },
-                  { src: "common/.xprofile", dest: ".xprofile" },
-              }
+        loop:            
+            -  { src: "common/.fluxbox", dest: ".fluxbox" }
+            -  { src: "common/.xinitrc", dest: ".xinitrc" }
+            -  { src: "common/.xprofile", dest: ".xprofile" }
+            

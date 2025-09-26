@@ -1,4 +1,3 @@
-tasks:
   - name: Download code
     get_url:
       url: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
@@ -8,14 +7,14 @@ tasks:
     apt:
       deb: "/tmp/code.deb"
       state: present
-  - name: Download vivaldi
+  - name: Download Google Chrome
     get_url:
-      url: "https://downloads.vivaldi.com/stable/vivaldi-stable_amd64.deb"
-      dest: "/tmp/vivaldi.deb"
+      url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+      dest: "/tmp/chrome.deb"
       mode: "0644"
-  - name: Install vivaldi
+  - name: Install Google Chrome
     apt:
-      deb: "/tmp/vivaldi.deb"
+      deb: "/tmp/chrome.deb"
       state: present
 
   - name: Add ulauncher repo
