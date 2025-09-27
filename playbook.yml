@@ -11,6 +11,10 @@
         import_tasks: distros/alpine/apk-packages.yml
         when: ansible_facts['distribution'] == "Alpine"
 
+      - name: CentOS dnf packages
+        import_tasks: distros/centos/dnf-packages.yml
+        when: ansible_facts['distribution'] == "CentOS"
+
       - name: Create ~/.config dir
         file:
             path: "{{ lookup('env', 'HOME')}}/.config"
