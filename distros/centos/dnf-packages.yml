@@ -1,0 +1,43 @@
+- name: Import Microsoft GPG key
+  rpm_key:
+      state: present
+      key: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: Add Visual Studio Code repository
+  dnf_repository:
+      name: vscode
+      description: Visual Studio Code
+      baseurl: https://packages.microsoft.com/yumrepos/vscode
+      enabled: yes
+      gpgcheck: yes
+      gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+      repo_gpgcheck: yes
+      type: rpm-md
+
+- name: Ensure VS Code is installed
+  dnf:
+      name: code
+      state: present
+
+- name: Install dnf packages
+  dnf:
+      name:
+          - "@Development Tools"
+          - neovim
+          - zsh
+
+          - gnome-tweaks
+          - https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+          - ibus-anthy
+
+          # to build alacritty
+          - cmake
+          - freetype-devel
+          - fontconfig-devel
+          - libxcb-devel
+          - libX11-devel
+          - libxkbcommon-devel
+          - xcb-util-devel
+
+- name: Install Alacritty
+  import_tasks: distros/centos/install-alacritty.yml

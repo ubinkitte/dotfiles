@@ -1,0 +1,55 @@
+- name: Install Rust via rustup (user-local)
+  become: no
+  shell: |
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  args:
+      creates: "{{ ansible_env.HOME }}/.cargo/bin/rustc"
+
+- name: Ensure ~/.cargo/bin is in PATH for this playbook
+  shell: |
+      export PATH="{{ ansible_env.HOME }}/.cargo/bin:$PATH"
+  args:
+      executable: /bin/bash
+
+- name: Clone Alacritty repository
+  git:
+      repo: https://github.com/alacritty/alacritty.git
+      dest: "{{ ansible_env.HOME }}/.local/src/alacritty"
+      update: yes
+
+- name: Build Alacritty
+  shell: |
+      cd {{ ansible_env.HOME }}/.local/src/alacritty
+      cargo build --release
+  environment:
+      PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+
+- name: Copy Alacritty binary to /usr/local/bin
+  copy:
+      src: "{{ ansible_env.HOME }}/.local/src/alacritty/target/release/alacritty"
+      dest: /usr/local/bin/alacritty
+      mode: "0755"
+  become: yes
+- name: Copy Alacritty binary
+  copy:
+      src: "{{ ansible_env.HOME }}/.local/src/alacritty/target/release/alacritty"
+      dest: /usr/local/bin/alacritty
+      mode: "0755"
+
+- name: Install Alacritty man page
+  copy:
+      src: "{{ ansible_env.HOME }}/.local/src/alacritty/extra/alacritty.man"
+      dest: /usr/share/man/man1/alacritty.1
+      mode: "0644"
+
+- name: Update man database
+  command: mandb
+
+- name: Install Alacritty desktop entry
+  copy:
+      src: "{{ ansible_env.HOME }}/.local/src/alacritty/extra/linux/Alacritty.desktop"
+      dest: /usr/share/applications/Alacritty.desktop
+      mode: "0644"
+
+- name: Update desktop database
+  command: desktop-file-install /usr/share/applications/Alacritty.desktop

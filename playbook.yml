@@ -37,27 +37,27 @@
             dest: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
             state: link
             force: yes
-        loop:            
-            -  { src: "common/.fluxbox", dest: ".fluxbox" }
-            -  { src: "common/.xinitrc", dest: ".xinitrc" }
-            -  { src: "common/.xprofile", dest: ".xprofile" }
+        loop:
+            - { src: "common/.fluxbox", dest: ".fluxbox" }
+            - { src: "common/.xinitrc", dest: ".xinitrc" }
+            - { src: "common/.xprofile", dest: ".xprofile" }
       - name: Ensure system font directory exists
         file:
-          path: /usr/local/share/fonts/nerd
-          state: directory
-          mode: "0755"
+            path: /usr/local/share/fonts/nerd
+            state: directory
+            mode: "0755"
 
       - name: Download ZedMono nerd font
         get_url:
-          url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/ZedMono.tar.xz
-          dest: /tmp/ZedMono.tar.xz
-          mode: "0644"
+            url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/ZedMono.tar.xz
+            dest: /tmp/ZedMono.tar.xz
+            mode: "0644"
 
       - name: Extract ZedMono font
         unarchive:
-          src: /tmp/ZedMono.tar.xz
-          dest: /usr/local/share/fonts/nerd/
-          remote_src: yes
+            src: /tmp/ZedMono.tar.xz
+            dest: /usr/local/share/fonts/nerd/
+            remote_src: yes
 
       - name: Refresh font cache
         command: fc-cache -fv
