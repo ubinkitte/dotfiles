@@ -23,7 +23,7 @@ case "$OS" in
         update="sudo dnf -y update"
         repo=""  # 特に追加不要
         install="sudo dnf install -y"
-        ANSIBLE_PKG="ansible-core"
+        ANSIBLE_PKG="ansible-core ansible-collection-community-general"
         ;;
     *)
         echo "Unsupported OS: $OS"
