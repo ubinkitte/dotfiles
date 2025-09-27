@@ -7,9 +7,9 @@ DEST="$HOME/dotfiles"
 # OS 判定
 if [ -f /etc/os-release ]; then
     . /etc/os-release
-    OS=$ID
+    OS=$(echo "$ID" | tr '[:upper:]' '[:lower:]')
 else
-    OS=$(uname -s)
+    OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 fi
 
 case "$OS" in
@@ -17,11 +17,13 @@ case "$OS" in
         update="sudo apt update"
         repo="sudo add-apt-repository -y universe"
         install="sudo apt install -y"
+        ANSIBLE_PKG="ansible"
         ;;
-    fedora|centos|rhel)
+    centos)
         update="sudo dnf -y update"
-        repo=":"               # 特に追加不要なら空
+        repo=""  # 特に追加不要
         install="sudo dnf install -y"
+        ANSIBLE_PKG="ansible-core"
         ;;
     *)
         echo "Unsupported OS: $OS"
@@ -34,7 +36,7 @@ eval "$update"
 eval "$repo"
 
 if ! command -v ansible >/dev/null 2>&1; then
-    eval "$install ansible"
+    eval "$install $ANSIBLE_PKG"
 fi
 
 if ! command -v git >/dev/null 2>&1; then
