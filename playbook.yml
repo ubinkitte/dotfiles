@@ -20,7 +20,7 @@
       # Start linking
       - name: Create symlink dir under ~/.config
         file:
-            src: "{{ lookup('env', 'HOME') }}/dotfiles/.config/{{ item }}/"
+            src: "{{ lookup('env', 'HOME') }}/dotfiles/common/.config/{{ item }}/"
             dest: "{{ lookup('env', 'HOME')}}/.config/{{ item }}/"
             state: link
             force: yes
@@ -33,7 +33,7 @@
             - waybar
       - name: Link other config files
         file:
-            src: "{{ lookup('env', 'HOME') }}/dotfiles/{{ item.src }}"
+            src: "{{ lookup('env', 'HOME') }}/dotfiles/common/{{ item.src }}"
             dest: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
             state: link
             force: yes
