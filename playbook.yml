@@ -20,8 +20,8 @@
       # Start linking
       - name: Create symlink dir under ~/.config
         file:
-            src: "{{ lookup('env', 'HOME') }}/dotfiles/common/.config/{{ item }}/"
-            dest: "{{ lookup('env', 'HOME')}}/.config/{{ item }}/"
+            src: "{{ lookup('env', 'HOME') }}/dotfiles/common/.config/{{ item }}"
+            dest: "{{ lookup('env', 'HOME')}}/.config/{{ item }}"
             state: link
             force: yes
         loop:
