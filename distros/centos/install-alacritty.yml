@@ -1,55 +1,77 @@
+# --- Rust / Alacritty build snippet (replace the previous version) ---
 - name: Install Rust via rustup (user-local)
   become: no
   shell: |
-      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
   args:
-      creates: "{{ ansible_env.HOME }}/.cargo/bin/rustc"
+    creates: "{{ lookup('env','HOME') }}/.cargo/bin/rustc"
 
 - name: Ensure ~/.cargo/bin is in PATH for this playbook
   shell: |
-      export PATH="{{ ansible_env.HOME }}/.cargo/bin:$PATH"
+    export PATH="{{ lookup('env','HOME') }}/.cargo/bin:$PATH"
   args:
-      executable: /bin/bash
+    executable: /bin/bash
 
 - name: Clone Alacritty repository
   git:
-      repo: https://github.com/alacritty/alacritty.git
-      dest: "{{ ansible_env.HOME }}/.local/src/alacritty"
-      update: yes
+    repo: https://github.com/alacritty/alacritty.git
+    dest: "{{ lookup('env','HOME') }}/.local/src/alacritty"
+    update: yes
 
-- name: Build Alacritty
+- name: Install stable Rust toolchain (explicit)
+  shell: "{{ lookup('env','HOME') }}/.cargo/bin/rustup install stable"
+  args:
+    creates: "{{ lookup('env','HOME') }}/.rustup/toolchains/stable-{{ ansible_architecture | default('x86_64') }}-unknown-linux-gnu"
+
+- name: Set default Rust toolchain to stable (optional, harmless)
+  shell: "{{ lookup('env','HOME') }}/.cargo/bin/rustup default stable"
+  args:
+    creates: "{{ lookup('env','HOME') }}/.rustup/settings.toml"
+
+# Optional debug tasks (temporarily useful)
+- name: Show rustup state (debug)
   shell: |
-      cd {{ ansible_env.HOME }}/.local/src/alacritty
-      cargo build --release
+    export HOME="{{ lookup('env','HOME') }}"
+    {{ lookup('env','HOME') }}/.cargo/bin/rustup show || true
+  args:
+    executable: /bin/bash
+  register: rustup_show
+- debug:
+    var: rustup_show.stdout_lines
+
+# The reliable build: use `rustup run stable cargo` so we don't depend on "default"
+- name: Build Alacritty (use rustup run stable)
+  shell: |
+    export HOME="{{ lookup('env','HOME') }}"
+    export CARGO_HOME="{{ lookup('env','HOME') }}/.cargo"
+    export RUSTUP_HOME="{{ lookup('env','HOME') }}/.rustup"
+    source "{{ lookup('env','HOME') }}/.cargo/env" || true
+    cd "{{ lookup('env','HOME') }}/.local/src/alacritty"
+    "{{ lookup('env','HOME') }}/.cargo/bin/rustup" run stable cargo build --release
+  args:
+    executable: /bin/bash
   environment:
-      PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+    PATH: "{{ lookup('env','HOME') }}/.cargo/bin:{{ ansible_env.PATH }}"
+
 
 - name: Copy Alacritty binary to /usr/local/bin
   copy:
-      src: "{{ ansible_env.HOME }}/.local/src/alacritty/target/release/alacritty"
+      src: "{{ lookup('env', 'HOME') }}/.local/src/alacritty/target/release/alacritty"
       dest: /usr/local/bin/alacritty
       mode: "0755"
   become: yes
 - name: Copy Alacritty binary
   copy:
-      src: "{{ ansible_env.HOME }}/.local/src/alacritty/target/release/alacritty"
+      src: "{{ lookup('env', 'HOME') }}/.local/src/alacritty/target/release/alacritty"
       dest: /usr/local/bin/alacritty
       mode: "0755"
 
-- name: Install Alacritty man page
-  copy:
-      src: "{{ ansible_env.HOME }}/.local/src/alacritty/extra/alacritty.man"
-      dest: /usr/share/man/man1/alacritty.1
-      mode: "0644"
-
-- name: Update man database
-  command: mandb
-
 - name: Install Alacritty desktop entry
   copy:
-      src: "{{ ansible_env.HOME }}/.local/src/alacritty/extra/linux/Alacritty.desktop"
+      src: "{{ lookup('env', 'HOME') }}/.local/src/alacritty/extra/linux/Alacritty.desktop"
       dest: /usr/share/applications/Alacritty.desktop
       mode: "0644"
+      remote_src: yes
 
 - name: Update desktop database
   command: desktop-file-install /usr/share/applications/Alacritty.desktop

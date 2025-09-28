@@ -12,7 +12,6 @@
       gpgcheck: yes
       gpgkey: https://packages.microsoft.com/keys/microsoft.asc
       repo_gpgcheck: yes
-      type: rpm-md
 
 - name: Ensure VS Code is installed
   dnf:
@@ -37,7 +36,8 @@
           - libxcb-devel
           - libX11-devel
           - libxkbcommon-devel
-          - xcb-util-devel
+      state: present
+      update_cache: yes
 
 - name: Install Alacritty
   import_tasks: distros/centos/install-alacritty.yml
