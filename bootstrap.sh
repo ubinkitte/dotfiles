@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-REPO="https://github.com/NP-F/dotfiles.git"
+REPO="https://github.com/ubinkitte/dotfiles.git"
 DEST="$HOME/dotfiles"
 
 # OS 判定
