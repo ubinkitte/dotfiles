@@ -1,3 +1,9 @@
+- name: Add Ubuntu repo
+  ansible.builtin.apt_repository:
+      repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} main restricted universe multiverse"
+      state: present
+  when: ansible_distribution in ["Zorin OS"]
+
 - name: Download code
   get_url:
       url: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
@@ -32,16 +38,20 @@
           - podman
           - pipx
 
+          - alacritty
+          - fcitx5-mozc
+          - nemo
+
+- name: Install other packages
+  apt:
+      name:
           - brightnessctl
           - alsa-utils
           # - iwd
           - fonts-noto-cjk-extra
           - fonts-noto-color-emoji
 
-          - alacritty
-          - fcitx5-mozc
           - kdeconnect
-          - nemo
 
           - fluxbox
           # - tint2
