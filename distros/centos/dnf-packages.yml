@@ -42,4 +42,4 @@
       update_cache: yes
 
 - name: Install Alacritty
-  import_tasks: distros/centos/install-alacritty.yml
+  import_tasks: distros/install-alacritty.yml
