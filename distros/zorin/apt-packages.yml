@@ -30,32 +30,11 @@
           - python3-full
           - python3-pip
           - podman
-          - pipx
 
-          - brightnessctl
-          - alsa-utils
-          # - iwd
-          - fonts-noto-cjk-extra
-          - fonts-noto-color-emoji
-
-          - alacritty
           - fcitx5-mozc
-          - kdeconnect
-          - nemo
 
-          - fluxbox
-          # - tint2
-          - picom
-          - xinit
-
-          - labwc
-          - sway-notification-center
-          - swaybg
-          - swayidle
-          - swaylock
-          - waybar
-          # - sfwbar
-          - wlogout
-          - pulseaudio
       state: present
       update_cache: yes
+
+- name: Install Alacritty
+  import_tasks: distros/install-alacritty.yml

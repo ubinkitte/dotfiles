@@ -1,4 +1,3 @@
-# --- Rust / Alacritty build snippet (replace the previous version) ---
 - name: Install Rust via rustup (user-local)
   become: no
   shell: |
