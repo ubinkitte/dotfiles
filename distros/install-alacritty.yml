@@ -52,25 +52,24 @@
   environment:
     PATH: "{{ lookup('env','HOME') }}/.cargo/bin:{{ ansible_env.PATH }}"
 
-
 - name: Copy Alacritty binary to /usr/local/bin
   copy:
-      src: "{{ lookup('env', 'HOME') }}/.local/src/alacritty/target/release/alacritty"
-      dest: /usr/local/bin/alacritty
-      mode: "0755"
+    src: "{{ lookup('env', 'HOME') }}/.local/src/alacritty/target/release/alacritty"
+    dest: /usr/local/bin/alacritty
+    mode: "0755"
   become: yes
 - name: Copy Alacritty binary
   copy:
-      src: "{{ lookup('env', 'HOME') }}/.local/src/alacritty/target/release/alacritty"
-      dest: /usr/local/bin/alacritty
-      mode: "0755"
+    src: "{{ lookup('env', 'HOME') }}/.local/src/alacritty/target/release/alacritty"
+    dest: /usr/local/bin/alacritty
+    mode: "0755"
 
 - name: Install Alacritty desktop entry
   copy:
-      src: "{{ lookup('env', 'HOME') }}/.local/src/alacritty/extra/linux/Alacritty.desktop"
-      dest: /usr/share/applications/Alacritty.desktop
-      mode: "0644"
-      remote_src: yes
+    src: "{{ lookup('env', 'HOME') }}/.local/src/alacritty/extra/linux/Alacritty.desktop"
+    dest: /usr/share/applications/Alacritty.desktop
+    mode: "0644"
+    remote_src: yes
 
 - name: Update desktop database
   command: desktop-file-install /usr/share/applications/Alacritty.desktop

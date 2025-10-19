@@ -989,17 +989,17 @@ Language=en
 Label=us
 
 [keyboard-us-carpalx-full]
-Description="Keyboard - English (US) - English (Carpalx, full optimization)"
+Description="Keyboard - English (US) - English (Carpalx, full optimisation)"
 Language=en
 Label=us
 
 [keyboard-us-carpalx-full-intl]
-Description="Keyboard - English (US) - English (Carpalx, full optimization, intl., with dead keys)"
+Description="Keyboard - English (US) - English (Carpalx, full optimisation, intl., with dead keys)"
 Language=en
 Label=us
 
 [keyboard-us-carpalx-full-altgr-intl]
-Description="Keyboard - English (US) - English (Carpalx, full optimization, intl., with AltGr dead keys)"
+Description="Keyboard - English (US) - English (Carpalx, full optimisation, intl., with AltGr dead keys)"
 Language=en
 Label=us
 

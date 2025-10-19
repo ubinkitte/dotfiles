@@ -48,6 +48,8 @@
             - { src: "common/.fluxbox", dest: ".fluxbox" }
             - { src: "common/.xinitrc", dest: ".xinitrc" }
             - { src: "common/.xprofile", dest: ".xprofile" }
+            - { src: "common/.zshrc", dest: ".zshrc" }
+            - { src: "common/.zshenv", dest: ".zshenv" }
       - name: Ensure system font directory exists
         file:
             path: /usr/local/share/fonts/nerd
