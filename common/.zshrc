@@ -11,7 +11,14 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-alias vi="nvim"
 
 [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 [ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
+
+alias vi="nvim"
+
+alias de='docker exec -it $(docker ps --format "{{.ID}}\t{{.Image}}\t{{.Names}}" \
+  | fzf --header="Select container" \
+        --preview="docker inspect {1}" \
+        --preview-window=down:60% \
+  | awk "{print \$1}") /bin/bash'
