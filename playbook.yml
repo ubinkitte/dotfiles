@@ -40,7 +40,7 @@
             - waybar
       - name: Link other config files
         file:
-            src: "{{ lookup('env', 'HOME') }}/dotfiles/common/{{ item.src }}"
+            src: "{{ lookup('env', 'HOME') }}/dotfiles/{{ item.src }}"
             dest: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
             state: link
             force: yes
