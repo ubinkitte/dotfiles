@@ -11,9 +11,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-
-[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
+fzf --zsh
 
 alias vi="nvim"
 
