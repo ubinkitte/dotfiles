@@ -11,7 +11,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-fzf --zsh
+source <(fzf --zsh)
 
 alias vi="nvim"
 
