@@ -13,7 +13,7 @@ else
 fi
 
 case "$OS" in
-    ubuntu|zorin) 
+    ubuntu|zorin|linuxmint) 
         update="sudo apt update"
         repo="sudo add-apt-repository -y universe"
         install="sudo apt install -y"

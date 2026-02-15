@@ -1,0 +1,35 @@
+- name: Download code
+  get_url:
+      url: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+      dest: "/tmp/code.deb"
+      mode: "0644"
+- name: Install code
+  apt:
+      deb: "/tmp/code.deb"
+      state: present
+- name: Download Google Chrome
+  get_url:
+      url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+      dest: "/tmp/chrome.deb"
+      mode: "0644"
+- name: Install Google Chrome
+  apt:
+      deb: "/tmp/chrome.deb"
+      state: present
+
+- name: Install apt packages
+  apt:
+      name:
+          - neovim
+          - build-essential
+          - zsh
+          - python3-full
+          - python3-pip
+          # - docker
+
+          - alacritty
+          - fcitx5-mozc
+          - kdeconnect
+
+      state: present
+      update_cache: yes

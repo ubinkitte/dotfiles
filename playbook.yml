@@ -9,6 +9,9 @@
       - name: Zorin apt packages
         import_tasks: distros/zorin/apt-packages.yml
         when: ansible_facts['distribution'] == "Zorin OS"
+      - name: Linux Mint apt packages
+        import_tasks: distros/linuxmint/apt-packages.yml
+        when: ansible_facts['distribution'] == "Linux Mint"
 
       - name: Alpine apk packages
         import_tasks: distros/alpine/apk-packages.yml
