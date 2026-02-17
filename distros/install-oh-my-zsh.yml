@@ -1,14 +1,14 @@
 - name: Set user shell to zsh
   user:
-    name: "{{ user }}"
+    name: "{{ lookup('env','USER') }}"
     shell: /bin/zsh
   become: true
 - name: Download ohmyzsh
   get_url:
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-    dest: "/home/{{ user }}/install.sh"
+    dest: "/home/{{ lookup('env','USER') }}/install.sh"
     mode: '0755'
 
 - name: Install ohmyzsh
   script:
-    cmd: "/home/{{ user }}/install.sh"
+    cmd: "/home/{{ lookup('env','USER') }}/install.sh"

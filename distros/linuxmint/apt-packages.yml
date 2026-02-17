@@ -25,11 +25,11 @@
           - zsh
           - python3-full
           - python3-pip
+          - tmux
           # - docker
 
           - alacritty
           - fcitx5-mozc
-          - kdeconnect
 
       state: present
       update_cache: yes

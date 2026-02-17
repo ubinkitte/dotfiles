@@ -1,6 +1,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="pmcgee"
 zstyle ':omz:update' mode reminder
+export LANG=en_US
 
 plugins=(
 	git
@@ -10,6 +11,10 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
+if [[ -f "$HOME/.fzf/bin/fzf" ]]; then
+export PATH="$PATH:$HOME/.fzf/bin"
+fi
 
 source <(fzf --zsh)
 
