@@ -26,6 +26,7 @@
           - python3-full
           - python3-pip
           - tmux
+          - unar
           # - docker
 
           - alacritty

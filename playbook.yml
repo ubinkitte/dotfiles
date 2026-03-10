@@ -53,6 +53,7 @@
             - { src: "common/.xprofile", dest: ".xprofile" }
             - { src: "common/.zshrc", dest: ".zshrc" }
             - { src: "common/.zshenv", dest: ".zshenv" }
+            - { src: "common/.zsh_aliases", dest: ".zsh_aliases" }
       - name: Ensure system font directory exists
         file:
             path: /usr/local/share/fonts/nerd

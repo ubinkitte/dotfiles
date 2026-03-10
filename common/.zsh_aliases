@@ -1,0 +1,28 @@
+# simple aliases
+# shell
+alias ..='cd ..'
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias ln='ln -i'
+alias mkdir='mkdir -p'
+
+# tools
+alias g='git'
+alias vi="nvim"
+
+# tldr
+de() {
+  local cid
+  cid=$(docker ps --format "{{.ID}}\t{{.Image}}\t{{.Names}}" \
+    | fzf --header="Select container" \
+          --preview="docker inspect {1}" \
+          --preview-window=down:60% \
+    | awk '{print $1}')
+
+  docker exec -it "$cid" /bin/bash
+}
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+alias upall='sudo apt update && sudo apt upgrade -y && sudo apt autoremove && flatpak update -y'
