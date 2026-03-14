@@ -27,6 +27,8 @@
           - python3-pip
           - tmux
           - unar
+          - bat
+          - ripgrep
           # - docker
 
           - alacritty

@@ -14,16 +14,13 @@ fi
 
 case "$OS" in
     ubuntu|zorin|linuxmint) 
-        update="sudo apt update"
-        repo="sudo add-apt-repository -y universe"
-        install="sudo apt install -y"
-        ANSIBLE_PKG="ansible"
+        sudo apt update
+        sudo add-apt-repository -y universe
+        sudo apt install -y git ansible
         ;;
     centos)
-        update="sudo dnf -y update"
-        repo=""  # 特に追加不要
-        install="sudo dnf install -y"
-        ANSIBLE_PKG="ansible-core ansible-collection-community-general"
+        sudo dnf -y update
+        sudo dnf install -y git ansible-core ansible-collection-community-general
         ;;
     *)
         echo "Unsupported OS: $OS"
@@ -31,16 +28,10 @@ case "$OS" in
         ;;
 esac
 
-# 実行
-eval "$update"
-eval "$repo"
-
-if ! command -v ansible >/dev/null 2>&1; then
-    eval "$install $ANSIBLE_PKG"
-fi
-
+# Check for git again just in case of a minimal installation
 if ! command -v git >/dev/null 2>&1; then
-    eval "$install git"
+    echo "Git could not be installed. Please install it manually and run this script again."
+    exit 1
 fi
 
 if [ ! -d "$DEST" ]; then

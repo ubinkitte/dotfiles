@@ -1,3 +1,7 @@
+if [[ ~/.zshrc -nt ~/.zshrc.zwc ]]; then
+  zcompile ~/.zshrc
+fi
+
 ZSH_THEME="pmcgee"
 zstyle ':omz:update' mode reminder
 setopt globdots

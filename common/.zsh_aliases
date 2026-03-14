@@ -1,28 +1,78 @@
 # simple aliases
 # shell
-alias ..='cd ..'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias ln='ln -i'
+alias cx='chmod +x'
+alias cw='chmod +w'
 alias mkdir='mkdir -p'
 
 # tools
+_has() { command -v "$1" >/dev/null 2>&1; }
+alias rl='reload'
+
 alias g='git'
-alias vi="nvim"
+alias ffmpeg='ffmpeg -hide_banner'
+alias ffprobe='ffprobe -hide_banner'
+
+if _has nvim; then
+  alias vi='nvim'
+  editor='nvim'
+elif _has vim; then
+  alias vi='vim'
+  editor='vim'
+fi
+alias bat='batcat'
+if _has batcat; then
+  alias cat='batcat --paging=never --style=plain --color=always'
+fi
 
 # tldr
-de() {
-  local cid
-  cid=$(docker ps --format "{{.ID}}\t{{.Image}}\t{{.Names}}" \
-    | fzf --header="Select container" \
-          --preview="docker inspect {1}" \
-          --preview-window=down:60% \
-    | awk '{print $1}')
-
-  docker exec -it "$cid" /bin/bash
+reload() {
+    kill $(jobs -p) 2>/dev/null
+    zsh -n ~/.zshrc || { echo "❌ Error found in .zshrc. Reload aborted.";return 1; }
+    zcompile ~/.zshrc
+    printf "\e[3J" && clear && hash -r
+    lsof -ti:3000,8000,8080 | xargs kill -9 2>/dev/null
+    exec zsh
 }
 mkcd() {
   mkdir -p "$1" && cd "$1"
 }
-alias upall='sudo apt update && sudo apt upgrade -y && sudo apt autoremove && flatpak update -y'
+upall() {
+  sudo apt update && sudo apt upgrade -y && sudo apt autoremove && flatpak update -y
+}
+
+## fzf-based functions
+de() {
+  local cid
+  if _has docker; then
+    container=docker
+  elif _has podman; then
+    container=podman
+  else
+    echo "No container runtime found (docker or podman)."
+    return 1
+  fi
+
+  cid=$($container ps --format "{{.ID}}\t{{.Image}}\t{{.Names}}" \
+    | fzf --header="Select container" \
+          --preview="$container inspect {1}" \
+          --preview-window=down:60% \
+    | awk '{print $1}')
+
+  [[ -n "$cid" ]] && $container exec -it "$cid" /bin/bash
+}
+
+fkill() {
+    local signal="${1:--9}"
+    local pids
+    pids=$(ps -ef \
+      | sed 1d \
+      | fzf --multi --header='[TAB] Multi-Select [Enter] kill' \
+            --preview='echo {}' --preview-window='down:3:wrap' \
+      | awk '{print $2}')
+    [[ -n "$pids" ]] && echo "$pids" | xargs kill "$signal" \
+      && echo "killed: $pids"
+}
