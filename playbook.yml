@@ -54,6 +54,7 @@
             - { src: "common/.zshrc", dest: ".zshrc" }
             - { src: "common/.zshenv", dest: ".zshenv" }
             - { src: "common/.zsh_aliases", dest: ".zsh_aliases" }
+            - { src: "common/.pkgmgrmgr", dest: ".pkgmgrmgr" }
       - name: Ensure system font directory exists
         file:
             path: /usr/local/share/fonts/nerd

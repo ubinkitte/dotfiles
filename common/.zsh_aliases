@@ -1,5 +1,8 @@
 # simple aliases
 # shell
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias la='ls -la'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
@@ -9,7 +12,9 @@ alias cw='chmod +w'
 alias mkdir='mkdir -p'
 
 # tools
-_has() { command -v "$1" >/dev/null 2>&1; }
+if ! command -v _has >/dev/null 2>&1; then
+    _has() { command -v "$1" >/dev/null 2>&1; }
+fi
 alias rl='reload'
 
 alias g='git'
@@ -41,7 +46,14 @@ mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 upall() {
-  sudo apt update && sudo apt upgrade -y && sudo apt autoremove && flatpak update -y
+  if _has pmgr; then
+    pmgr u && pmgr c
+  else
+    echo "Package manager manager not found."
+  fi
+  if _has flatpak; then
+    flatpak update -y
+  fi
 }
 
 ## fzf-based functions

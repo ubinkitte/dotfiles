@@ -17,6 +17,9 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 source <(fzf --zsh)
 
+if [ -f ~/.pkgmgrmgr ]; then
+	source ~/.pkgmgrmgr
+fi
 if [ -f ~/.zsh_aliases ]; then
     source ~/.zsh_aliases
 fi

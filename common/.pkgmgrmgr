@@ -1,0 +1,151 @@
+if ! command -v _has >/dev/null 2>&1; then
+    _has() { command -v "$1" >/dev/null 2>&1; }
+fi
+
+# Helper to determine if sudo is needed and build the command
+_run_as_root() {
+    if [ "$(id -u)" -eq 0 ]; then
+        "$@"
+    elif _has sudo; then
+        sudo "$@"
+    else
+        echo "Error: This action requires root privileges but 'sudo' is not installed."
+        return 1
+    fi
+}
+_catalogue_apt() {
+    [ -z "$1" ] && { echo "Enter a search term."; return 1; }
+    _has fzf || { echo "fzf not found. Please install fzf to use the catalogue feature."; return 1; }
+    local selected
+    selected=$(apt search "$1" 2>/dev/null | awk 'NF{print $2}' | \
+        fzf --height 40% --layout=reverse --border --inline-info \
+            --multi \
+            --preview 'apt-cache show {}' \
+            --header 'Tab: Multi-select / Enter: install / ESC: cancel')
+    [ -z "$selected" ] && return 0
+    _run_as_root apt install -y "${(f)selected}"
+}
+
+_catalogue_pacman() {
+    [ -z "$1" ] && { echo "Enter a search term."; return 1; }
+    _has fzf || { echo "fzf not found. Please install fzf to use the catalogue feature."; return 1; }
+    local selected
+    selected=$(pacman -Ss "$1" | awk 'NF{print $1}' | \
+        fzf --height 40% --layout=reverse --border --inline-info \
+            --multi \
+            --preview 'pacman -Si {}' \
+            --header 'Tab: Multi-select / Enter: install / ESC: cancel')
+    [ -z "$selected" ] && return 0
+    _run_as_root pacman -S --noconfirm "${(f)selected}"
+}
+
+_catalogue_dnf() {
+    [ -z "$1" ] && { echo "Enter a search term."; return 1; }
+    _has fzf || { echo "fzf not found. Please install fzf to use the catalogue feature."; return 1; }
+    local selected
+    selected=$(dnf search "$1" 2>/dev/null | awk 'NF{print $1}' | \
+        fzf --height 40% --layout=reverse --border --inline-info \
+            --multi \
+            --preview 'dnf info {}' \
+            --header 'Tab: Multi-select / Enter: install / ESC: cancel')
+    [ -z "$selected" ] && return 0
+    _run_as_root dnf install -y "${(f)selected}"
+}
+
+_catalogue_apk() {
+    [ -z "$1" ] && { echo "Enter a search term."; return 1; }
+    _has fzf || { echo "fzf not found. Please install fzf to use the catalogue feature."; return 1; }
+    local selected
+    selected=$(apk search "$1" 2>/dev/null | \
+        fzf --height 40% --layout=reverse --border --inline-info \
+            --multi \
+            --preview 'apk info {}' \
+            --header 'Tab: Multi-select / Enter: install / ESC: cancel')
+    [ -z "$selected" ] && return 0
+    _run_as_root apk add "${(f)selected}"
+}
+
+pmgr() {
+    local action="$1"
+    shift
+    local -a pkgs=( "$@" )
+
+    # Detect package manager and set command arrays
+    local -a add_cmd rm_cmd upd_cmd s_cmd clr_cmd
+    local catalogue_fn
+
+    if _has apt; then
+        add_cmd=( apt install -y )
+        rm_cmd=( apt remove -y )
+        upd_cmd=( sh -c 'apt update && apt upgrade -y' )
+        s_cmd=( apt search )
+        clr_cmd=( apt autoremove -y )
+        catalogue_fn="_catalogue_apt"
+    elif _has pacman; then
+        add_cmd=( pacman -S --noconfirm )
+        rm_cmd=( pacman -R --noconfirm )
+        upd_cmd=( pacman -Syu --noconfirm )
+        s_cmd=( pacman -Ss )
+        clr_cmd=( sh -c 'pacman -Rns $(pacman -Qtdq 2>/dev/null)' )
+        catalogue_fn="_catalogue_pacman"
+    elif _has dnf; then
+        add_cmd=( dnf install -y )
+        rm_cmd=( dnf remove -y )
+        upd_cmd=( dnf upgrade -y )
+        s_cmd=( dnf search )
+        clr_cmd=( dnf autoremove -y )
+        catalogue_fn="_catalogue_dnf"
+    elif _has apk; then
+        add_cmd=( apk add )
+        rm_cmd=( apk del )
+        upd_cmd=( sh -c 'apk update && apk upgrade' )
+        s_cmd=( apk search )
+        clr_cmd=( sh -c 'apk del $(apk info -q --installed --recursive 2>/dev/null)' )
+        catalogue_fn="_catalogue_apk"
+    else
+        echo "Error: No supported package manager found (apt / pacman / dnf / apk)."
+        return 1
+    fi
+
+    case "$action" in
+        add|a)
+            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pmgr add <package> [...]"; return 1; }
+            _run_as_root "${add_cmd[@]}" "${pkgs[@]}"
+            ;;
+        rm|r)
+            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pmgr rm <package> [...]"; return 1; }
+            _run_as_root "${rm_cmd[@]}" "${pkgs[@]}"
+            ;;
+        upd|u)
+            _run_as_root "${upd_cmd[@]}"
+            ;;
+        s)
+            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pmgr s <keyword>"; return 1; }
+            "${s_cmd[@]}" "${pkgs[@]}"
+            ;;
+        catalogue)
+            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pmgr catalogue <keyword>"; return 1; }
+            "$catalogue_fn" "${pkgs[1]}"
+            ;;
+        clr|c)
+            _run_as_root "${clr_cmd[@]}"
+            ;;
+        help|h|"")
+            cat <<'EOF'
+Usage: pmgr <action> [package ...]
+
+  add/a   <pkg...>   Install packages
+  rm/r    <pkg...>   Remove packages
+  upd/u              Update system
+  s       <keyword>  Search packages
+  catalogue <kw>     Interactive search & install with fzf
+  clr/c              Remove unused packages
+  help/h             Show this message
+EOF
+            ;;
+        *)
+            echo "Unknown action: '$action'. Run 'pmgr help' for usage."
+            return 1
+            ;;
+    esac
+}
