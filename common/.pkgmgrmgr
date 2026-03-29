@@ -1,5 +1,5 @@
 if ! command -v _has >/dev/null 2>&1; then
-    _has() { command -v "$1" >/dev/null 2>&1; }
+    _has() { \command -v "$1" >/dev/null 2>&1; }
 fi
 
 # Helper to determine if sudo is needed and build the command
@@ -13,59 +13,96 @@ _run_as_root() {
         return 1
     fi
 }
+
+_pga_log() {
+    if [ -z "$HOME" ]; then
+        echo "Warning: HOME environment variable is not set. Cannot log package manager actions."
+        return 1
+    fi
+
+    local show_log="cat"
+    if _has batcat; then
+        show_log=( batcat --paging=never --style=plain --color=always )
+    elif _has bat; then
+        show_log=( bat --paging=never --style=plain --color=always )
+    fi
+
+    if [ "$1" = "log" ]; then
+        if [ -f "$HOME/.pga.log" ]; then
+            if _has less; then
+                "${show_log[@]}" "$HOME/.pga.log" | less -R
+            else
+                "${show_log[@]}" "$HOME/.pga.log"
+            fi
+        else
+            echo "No log file found at $HOME/.pga.log"
+        fi
+        return 0
+    fi
+    
+    local log_file="$HOME/.pga.log"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "[$timestamp] $@" >> "$log_file"
+}
+
 _catalogue_apt() {
-    [ -z "$1" ] && { echo "Enter a search term."; return 1; }
+    #[ -z "$1" ] && { echo "Enter a search term."; return 1; }
     _has fzf || { echo "fzf not found. Please install fzf to use the catalogue feature."; return 1; }
     local selected
-    selected=$(apt search "$1" 2>/dev/null | awk 'NF{print $2}' | \
+    selected=$(apt search . 2>/dev/null | awk 'NF{print $2}' | \
         fzf --height 40% --layout=reverse --border --inline-info \
             --multi \
             --preview 'apt-cache show {}' \
             --header 'Tab: Multi-select / Enter: install / ESC: cancel')
     [ -z "$selected" ] && return 0
-    _run_as_root apt install -y "${(f)selected}"
+    _run_as_root apt install -y ${(f)selected}
+    _pga_log "INSTALLED (catalogue): ${(f)selected}"
 }
 
 _catalogue_pacman() {
-    [ -z "$1" ] && { echo "Enter a search term."; return 1; }
+    #[ -z "$1" ] && { echo "Enter a search term."; return 1; }
     _has fzf || { echo "fzf not found. Please install fzf to use the catalogue feature."; return 1; }
     local selected
-    selected=$(pacman -Ss "$1" | awk 'NF{print $1}' | \
+    selected=$(pacman -Ss "" | awk 'NF{print $1}' | \
         fzf --height 40% --layout=reverse --border --inline-info \
             --multi \
             --preview 'pacman -Si {}' \
             --header 'Tab: Multi-select / Enter: install / ESC: cancel')
     [ -z "$selected" ] && return 0
-    _run_as_root pacman -S --noconfirm "${(f)selected}"
+    _run_as_root pacman -S --noconfirm ${(f)selected}
+    _pga_log "INSTALLED (catalogue): ${(f)selected}"
 }
 
 _catalogue_dnf() {
-    [ -z "$1" ] && { echo "Enter a search term."; return 1; }
+    #[ -z "$1" ] && { echo "Enter a search term."; return 1; }
     _has fzf || { echo "fzf not found. Please install fzf to use the catalogue feature."; return 1; }
     local selected
-    selected=$(dnf search "$1" 2>/dev/null | awk 'NF{print $1}' | \
+    selected=$(dnf search "*" 2>/dev/null | awk 'NF{print $1}' | \
         fzf --height 40% --layout=reverse --border --inline-info \
             --multi \
             --preview 'dnf info {}' \
             --header 'Tab: Multi-select / Enter: install / ESC: cancel')
     [ -z "$selected" ] && return 0
-    _run_as_root dnf install -y "${(f)selected}"
+    _run_as_root dnf install -y ${(f)selected}
+    _pga_log "INSTALLED (catalogue): ${(f)selected}"
 }
 
 _catalogue_apk() {
-    [ -z "$1" ] && { echo "Enter a search term."; return 1; }
+    #[ -z "$1" ] && { echo "Enter a search term."; return 1; }
     _has fzf || { echo "fzf not found. Please install fzf to use the catalogue feature."; return 1; }
     local selected
-    selected=$(apk search "$1" 2>/dev/null | \
+    selected=$(apk search "*" 2>/dev/null | \
         fzf --height 40% --layout=reverse --border --inline-info \
             --multi \
             --preview 'apk info {}' \
             --header 'Tab: Multi-select / Enter: install / ESC: cancel')
     [ -z "$selected" ] && return 0
-    _run_as_root apk add "${(f)selected}"
+    _run_as_root apk add ${(f)selected}
+    _pga_log "INSTALLED (catalogue): ${(f)selected}"
 }
 
-pmgr() {
+pga() {
+    start_time=$(date +%s)
     local action="$1"
     shift
     local -a pkgs=( "$@" )
@@ -108,43 +145,71 @@ pmgr() {
     fi
 
     case "$action" in
-        add|a)
-            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pmgr add <package> [...]"; return 1; }
-            _run_as_root "${add_cmd[@]}" "${pkgs[@]}"
+add|a)
+            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pga add <package> [...]"; return 1; }
+            
+            error_log=$(mktemp)
+            if _run_as_root "${add_cmd[@]}" "${pkgs[@]}" 2>"$error_log"; then
+                _pga_log "SUCCESS: Installed ${pkgs[*]}"
+                status="Installed"
+            else
+                _pga_log "FAILED: Install ${pkgs[*]} - Error: $(cat "$error_log")"
+                status="Failed to install"
+            fi
+            
+            end_time=$(date +%s)
+            duration=$((end_time - start_time))
+            _pga_log "DURATION: $duration seconds"
+            echo "\n$status ${pkgs[*]} in $duration seconds."
+            rm -f "$error_log"
             ;;
         rm|r)
-            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pmgr rm <package> [...]"; return 1; }
+            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pga rm <package> [...]"; return 1; }
             _run_as_root "${rm_cmd[@]}" "${pkgs[@]}"
+            _pga_log "REMOVED: ${pkgs[*]}"
             ;;
         upd|u)
             _run_as_root "${upd_cmd[@]}"
+            _pga_log "SYSTEM UPDATE"
+            end_time=$(date +%s)
+            _pga_log "UPDATE DURATION: $((end_time - start_time)) seconds"
+            echo "\nSystem updated in $((end_time - start_time)) seconds."
             ;;
         s)
-            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pmgr s <keyword>"; return 1; }
+            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pga s <keyword>"; return 1; }
             "${s_cmd[@]}" "${pkgs[@]}"
             ;;
         catalogue)
-            [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pmgr catalogue <keyword>"; return 1; }
-            "$catalogue_fn" "${pkgs[1]}"
+            # [ ${#pkgs[@]} -eq 0 ] && { echo "Usage: pga catalogue <keyword>"; return 1; }
+            "$catalogue_fn"
+            end_time=$(date +%s)
+            _pga_log "CATALOGUE DURATION: $((end_time - start_time)) seconds"
+            echo "\nCatalogue session completed in $((end_time - start_time)) seconds."
             ;;
         clr|c)
             _run_as_root "${clr_cmd[@]}"
+            _pga_log "CLEANUP PERFORMED"
+            ;;
+        log)
+            _pga_log "log"
             ;;
         help|h|"")
             cat <<'EOF'
-Usage: pmgr <action> [package ...]
+Usage: pga <action> [package ...]
 
   add/a   <pkg...>   Install packages
   rm/r    <pkg...>   Remove packages
   upd/u              Update system
   s       <keyword>  Search packages
-  catalogue <kw>     Interactive search & install with fzf
+  catalogue          Interactive search & install with fzf
   clr/c              Remove unused packages
+  log                Show installation log
+
   help/h             Show this message
 EOF
             ;;
         *)
-            echo "Unknown action: '$action'. Run 'pmgr help' for usage."
+            echo "Unknown action: '$action'. Run 'pga help' for usage."
             return 1
             ;;
     esac

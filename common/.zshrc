@@ -2,7 +2,8 @@ if [[ ~/.zshrc -nt ~/.zshrc.zwc ]]; then
   zcompile ~/.zshrc
 fi
 
-ZSH_THEME="pmcgee"
+#ZSH_THEME="pmcgee"
+eval "$(starship init zsh)"
 zstyle ':omz:update' mode reminder
 setopt globdots
 
