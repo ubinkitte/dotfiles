@@ -12,6 +12,9 @@
       - name: Linux Mint apt packages
         import_tasks: distros/linuxmint/apt-packages.yml
         when: ansible_facts['distribution'] == "Linux Mint"
+      - name: KDE Neon apt packages
+        import_tasks: distros/kdeneon/apt-packages.yml
+        when: ansible_facts['distribution'] == "KDE neon"
 
       - name: Alpine apk packages
         import_tasks: distros/alpine/apk-packages.yml

@@ -25,3 +25,7 @@ if [ -f ~/.zsh_aliases ]; then
     source ~/.zsh_aliases
 fi
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+. "$HOME/.local/bin/env"

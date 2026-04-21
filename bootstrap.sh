@@ -13,7 +13,7 @@ else
 fi
 
 case "$OS" in
-    ubuntu|zorin|linuxmint) 
+    ubuntu|zorin|linuxmint|neon) 
         sudo apt update
         sudo add-apt-repository -y universe
         sudo apt install -y git ansible
