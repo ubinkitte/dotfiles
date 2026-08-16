@@ -1,4 +1,5 @@
 general.import = ["alacritty.toml"]
 
 [terminal]
-shell = "\"D:\\msys64\\msys2_shell.cmd\" -defterm -here -no-start -shell zsh -ucrt64"
+# this depends on installation path of msys2, but i dont love to use environment variables in this file lol
+shell = "\"D:\\msys64\\msys2_shell.cmd\" -defterm -no-start -shell zsh -ucrt64"
