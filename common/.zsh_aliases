@@ -1,0 +1,104 @@
+# simple aliases
+# shell
+alias ls='ls --color'
+alias ll='ls -l'
+alias la='ls -la'
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias ln='ln -i'
+alias cx='chmod +x'
+alias cw='chmod +w'
+alias mkdir='mkdir -p'
+alias less='less -R'
+alias grep='grep --color=auto'
+
+# tools
+if ! command -v _has >/dev/null 2>&1; then
+    _has() { command -v "$1" >/dev/null 2>&1; }
+fi
+alias r='reload'
+
+alias g='git'
+alias ffmpeg='ffmpeg -hide_banner'
+alias ffprobe='ffprobe -hide_banner'
+alias py='python3'
+
+if _has nvim; then
+  alias vi='nvim'
+elif _has vim; then
+  alias vi='vim'
+fi
+alias bat='batcat'
+if _has batcat; then
+  alias cat='batcat --paging=never --style=plain --color=always'
+fi
+
+# functions
+open() {
+    local target="${1:-.}"
+
+    if _has xdg-open; then
+        (xdg-open "$target" >/dev/null 2>&1 & disown > /dev/null 2>&1)
+    elif _has open; then
+        command open "$target"
+    else
+        echo "No suitable command found to open files."
+        return 1
+    fi
+}
+
+reload() {
+    kill $(jobs -p) 2>/dev/null
+    zsh -n ~/.zshrc || { echo "❌ Error found in .zshrc. Reload aborted.";return 1; }
+    zcompile ~/.zshrc
+    printf "\e[3J" && clear && hash -r
+    lsof -ti:3000,8000,8080 | xargs kill -9 2>/dev/null
+    exec zsh
+}
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+upall() {
+  if _has pga; then
+    pga u && pga c
+  else
+    echo "Package manager manager not found."
+  fi
+  if _has flatpak; then
+    flatpak update -y
+  fi
+}
+
+## fzf-based functions
+de() {
+  local cid
+  if _has docker; then
+    container=docker
+  elif _has podman; then
+    container=podman
+  else
+    echo "No container runtime found (docker or podman)."
+    return 1
+  fi
+
+  cid=$($container ps --format "{{.ID}}\t{{.Image}}\t{{.Names}}" \
+    | fzf --header="Select container" \
+          --preview="$container inspect {1}" \
+          --preview-window=down:60% \
+    | awk '{print $1}')
+
+  [[ -n "$cid" ]] && $container exec -it "$cid" /bin/bash
+}
+
+fkill() {
+    local signal="${1:--9}"
+    local pids
+    pids=$(ps -ef \
+      | sed 1d \
+      | fzf --multi --header='[TAB] Multi-Select [Enter] kill' \
+            --preview='echo {}' --preview-window='down:3:wrap' \
+      | awk '{print $2}')
+    [[ -n "$pids" ]] && echo "$pids" | xargs kill "$signal" \
+      && echo "killed: $pids"
+}

@@ -1,4 +1,4 @@
-general.import = ["alacritty.toml"]
+# general.import = ["alacritty.toml"]
 
 [terminal]
 # this depends on installation path of msys2, but i dont love to use environment variables in this file lol

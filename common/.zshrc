@@ -1,6 +1,11 @@
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="pmcgee"
+if [[ ~/.zshrc -nt ~/.zshrc.zwc ]]; then
+  zcompile ~/.zshrc
+fi
+
+#ZSH_THEME="pmcgee"
+eval "$(starship init zsh)"
 zstyle ':omz:update' mode reminder
+setopt globdots
 
 plugins=(
 	git
@@ -9,14 +14,18 @@ plugins=(
 	zsh-completions
 )
 
+# import other sources
 source $ZSH/oh-my-zsh.sh
-
 source <(fzf --zsh)
 
-alias vi="nvim"
+if [ -f ~/.pkgmgrmgr ]; then
+	source ~/.pkgmgrmgr
+fi
+if [ -f ~/.zsh_aliases ]; then
+    source ~/.zsh_aliases
+fi
 
-alias de='docker exec -it $(docker ps --format "{{.ID}}\t{{.Image}}\t{{.Names}}" \
-  | fzf --header="Select container" \
-        --preview="docker inspect {1}" \
-        --preview-window=down:60% \
-  | awk "{print \$1}") /bin/bash'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+. "$HOME/.local/bin/env"

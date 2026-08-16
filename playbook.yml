@@ -9,6 +9,12 @@
       - name: Zorin apt packages
         import_tasks: distros/zorin/apt-packages.yml
         when: ansible_facts['distribution'] == "Zorin OS"
+      - name: Linux Mint apt packages
+        import_tasks: distros/linuxmint/apt-packages.yml
+        when: ansible_facts['distribution'] == "Linux Mint"
+      - name: KDE Neon apt packages
+        import_tasks: distros/kdeneon/apt-packages.yml
+        when: ansible_facts['distribution'] == "KDE neon"
 
       - name: Alpine apk packages
         import_tasks: distros/alpine/apk-packages.yml
@@ -50,6 +56,8 @@
             - { src: "common/.xprofile", dest: ".xprofile" }
             - { src: "common/.zshrc", dest: ".zshrc" }
             - { src: "common/.zshenv", dest: ".zshenv" }
+            - { src: "common/.zsh_aliases", dest: ".zsh_aliases" }
+            - { src: "common/.pkgmgrmgr", dest: ".pkgmgrmgr" }
       - name: Ensure system font directory exists
         file:
             path: /usr/local/share/fonts/nerd

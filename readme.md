@@ -24,10 +24,12 @@ UBinKitteのdotfileたちです。labwcを使用した最小限かつエレガ�
 I recommend `pmcgee` theme.  
 私は`pmcgee`テーマを使用しています。
 
-##### Install zsh-autosuggestions
+##### Install zsh-extensons
 
 ```sh
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-completions.git ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
 ```
 
 ```sh
