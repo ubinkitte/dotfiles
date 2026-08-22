@@ -15,6 +15,7 @@ plugins=(
 )
 
 # import other sources
+export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 source <(fzf --zsh)
 
@@ -25,7 +26,6 @@ if [ -f ~/.zsh_aliases ]; then
     source ~/.zsh_aliases
 fi
 
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-. "$HOME/.local/bin/env"
+# . "$HOME/.local/bin/env"

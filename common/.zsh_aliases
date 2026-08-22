@@ -24,14 +24,19 @@ alias ffmpeg='ffmpeg -hide_banner'
 alias ffprobe='ffprobe -hide_banner'
 alias py='python3'
 
+# # neovim
 if _has nvim; then
   alias vi='nvim'
 elif _has vim; then
   alias vi='vim'
 fi
-alias bat='batcat'
+
+# # bat
 if _has batcat; then
+  alias bat='batcat'
   alias cat='batcat --paging=never --style=plain --color=always'
+elif _has bat; then
+  alias cat='bat --paging=never --style=plain --color=always'
 fi
 
 # functions
@@ -59,6 +64,7 @@ reload() {
 mkcd() {
   mkdir -p "$1" && cd "$1"
 }
+
 upall() {
   if _has pga; then
     pga u && pga c
