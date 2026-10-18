@@ -1,0 +1,9 @@
+[
+  {
+    "context": "Editor && mode == full",
+    "bindings": {
+      "alt-z": "editor::ToggleSoftWrap",
+      "cmd-k z": null
+    }
+  }
+]

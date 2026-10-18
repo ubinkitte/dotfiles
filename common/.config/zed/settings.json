@@ -1,0 +1,174 @@
+{
+  "agent": {
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": [],
+    "threads_sidebar": {
+      "position": "right"
+    }
+  },
+  "agent_servers": {
+    "OpenCode V2": {
+      "favorite_config_option_values": {
+        "model": [
+          "openai/gpt-6-luna",
+          "xai/grok-4.6",
+          "openai/gpt-6.1-sol"
+        ]
+      },
+      "args": [
+        "acp"
+      ],
+      "command": "opencode",
+      "default_config_options": {
+        "effort": "xhigh",
+        "mode": "build",
+        "model": "openai/gpt-6-luna"
+      },
+      "type": "custom"
+    },
+    "codex-acp": {
+      "type": "registry"
+    }
+  },
+  "auto_indent_on_paste": true,
+  "auto_signature_help": false,
+  "autosave": "on_focus_change",
+  "bottom_dock_layout": "contained",
+  "buffer_font_family": "PlemolJP35 Console NF",
+  "buffer_font_size": 13.0,
+  "buffer_font_weight": 400.0,
+  "cli_default_open_behavior": "new_window",
+  "collaboration_panel": {
+    "button": false,
+    "dock": "right"
+  },
+  "diagnostics": {
+    "include_warnings": true,
+    "inline": {
+      "enabled": true
+    },
+    "lsp_pull_diagnostics": {
+      "enabled": true
+    }
+  },
+  "diagnostics_max_severity": "all",
+  "diff_view_style": "split",
+  "edit_predictions": {
+    "disabled_globs": [
+      "..."
+    ],
+    "mode": "subtle",
+    "provider": "copilot"
+  },
+  "excerpt_context_lines": 2,
+  "expand_excerpt_lines": 5,
+  "git_panel": {
+    "button": false,
+    "dock": "right"
+  },
+  "gutter": {
+    "folds": true
+  },
+  "hover_popover_enabled": true,
+  "hover_popover_sticky": true,
+  "icon_theme": "Material Icon Theme",
+  "indent_guides": {
+    "enabled": true
+  },
+  "inlay_hints": {
+    "enabled": false,
+    "show_background": false,
+    "show_value_hints": true
+  },
+  "inline_code_actions": true,
+  "languages": {
+    "Python": {
+      "completions": {
+        "lsp": true
+      },
+      "enable_language_server": true,
+      "language_servers": [
+        "basedpyright",
+        "ruff",
+        "!pyright"
+      ],
+      "show_edit_predictions": true
+    }
+  },
+  "minimap": {
+    "display_in": "active_editor"
+  },
+  "outline_panel": {
+    "button": true,
+    "dock": "right"
+  },
+  "project_panel": {
+    "bold_folder_labels": false,
+    "diagnostic_badges": false,
+    "dock": "left",
+    "git_status_indicator": true,
+    "hide_hidden": false,
+    "hide_root": true,
+    "indent_guides": {
+      "show": "always"
+    },
+    "scrollbar": {
+      "show": "auto"
+    }
+  },
+  "proxy": "",
+  "scrollbar": {
+    "diagnostics": "all"
+  },
+  "show_completion_documentation": true,
+  "show_completions_on_input": true,
+  "show_whitespaces": "boundary",
+  "show_wrap_guides": false,
+  "soft_wrap": "editor_width",
+  "status_bar": {
+    "line_endings_button": true,
+    "show_active_file": false
+  },
+  "sticky_scroll": {
+    "enabled": false
+  },
+  "tab_bar": {
+    "show_pinned_tabs_in_separate_row": false
+  },
+  "tabs": {
+    "file_icons": true,
+    "git_status": true,
+    "show_close_button": "always"
+  },
+  "telemetry": {
+    "anthropic_retention": false,
+    "diagnostics": false,
+    "metrics": false
+  },
+  "terminal": {
+    "font_family": "ZedMono Nerd Font",
+    "font_size": 12.0,
+    "show_count_badge": false
+  },
+  "theme": {
+    "dark": "VSCode Dark Modern",
+    "light": "One Light",
+    "mode": "dark"
+  },
+  "title_bar": {
+    "button_layout": "platform_default",
+    "show_branch_status_icon": false,
+    "show_menus": true
+  },
+  "toolbar": {
+    "agent_review": true,
+    "breadcrumbs": true,
+    "quick_actions": true,
+    "selections_menu": true
+  },
+  "ui_font_family": ".ZedSans",
+  "ui_font_size": 15.0,
+  "ui_font_weight": 400.0,
+  "vertical_scroll_margin": 3.0
+}
