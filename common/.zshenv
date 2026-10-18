@@ -1,11 +1,17 @@
-# Lang and locale
+# Locale
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US:en
 
-# Tools
+# Homebrew
+export HOMEBREW_NO_ENV_HINTS=1
 
-if [[ -f "$HOME/.fzf/bin/fzf" ]]; then
-export PATH="$PATH:$HOME/.fzf/bin"
+# fzf
+if [[ -x "$HOME/.fzf/bin/fzf" ]]; then
+    export PATH="$PATH:$HOME/.fzf/bin"
 fi
 
+# User binaries
+export PATH="$HOME/.local/bin:$PATH"
+
+# Rust
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"

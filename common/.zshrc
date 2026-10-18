@@ -1,41 +1,16 @@
-if [[ ~/.zshrc -nt ~/.zshrc.zwc ]]; then
-  zcompile ~/.zshrc
-fi
-
-#ZSH_THEME="pmcgee"
-eval "$(starship init zsh)"
-zstyle ':omz:update' mode reminder
 setopt globdots
 
-plugins=(
-	git
-	zsh-autosuggestions
-	zsh-syntax-highlighting
-	zsh-completions
-)
-
-# import other sources
+# Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"
-source $ZSH/oh-my-zsh.sh
-source <(fzf --zsh)
+plugins=(git zsh-completions zsh-autosuggestions zsh-syntax-highlighting)
+zstyle ':omz:update' mode reminder
 
-if [ -f ~/.zsh_aliases ]; then
-    source ~/.zsh_aliases
-fi
+[[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Tools (after OMZ so PATH and prompt are not overwritten)
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
+(( $+commands[starship] )) && eval "$(starship init zsh)"
+(( $+commands[fzf] )) && source <(fzf --zsh)
 
-# . "$HOME/.local/bin/env"
-
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# pnpm end
-
-eval "$(fnm env --use-on-cd --shell zsh)"
-
-# Pi
-export PATH="$HOME/.local/share/fnm/node-versions/v24.20.0/installation/bin:$PATH"
+[[ -r "$HOME/.zsh_exports" ]] && source "$HOME/.zsh_exports"
+[[ -r "$HOME/.zsh_aliases" ]] && source "$HOME/.zsh_aliases"
