@@ -1,4 +1,26 @@
 [tools]
-node = "26.11.1"
-pnpm = "12.11.2"
-uv = "0.12.21"
+# Language runtimes
+
+## JavaScript / TypeScript
+node = "latest"
+pnpm = "latest"
+
+## Python
+python = "latest"
+uv = "latest"
+
+## Go
+go = "latest"
+
+# CLI tools
+bat = "latest"
+fzf = "latest"
+ripgrep = "latest"
+fd = "latest"
+tmux = "latest"
+
+## Editors
+micro = "latest"
+neovim = "latest"
+
+starship = "latest"
