@@ -1,5 +1,5 @@
 [user]
-	email = lvh@tuta.io
+	email = ubinkitte.shifting140@slmail.me
 	name = UBinKitte
 [lfs "customtransfer.xet"]
 	path = git-xet
@@ -12,3 +12,5 @@
 	smudge = git-lfs smudge -- %f
 [push]
 	default = current
+[core]
+	quotePath = false
