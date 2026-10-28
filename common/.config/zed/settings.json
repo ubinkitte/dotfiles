@@ -1,4 +1,5 @@
 {
+  "scan_symlinks": "always",
   "agent": {
     "dock": "right",
     "favorite_models": [],
@@ -13,7 +14,8 @@
         "model": [
           "openai/gpt-6-luna",
           "xai/grok-4.6",
-          "openai/gpt-6.1-sol"
+          "openai/gpt-6.1-sol",
+          "xai/grok-4.7"
         ]
       },
       "args": [
@@ -21,9 +23,9 @@
       ],
       "command": "opencode",
       "default_config_options": {
-        "effort": "xhigh",
+        "effort": "medium",
         "mode": "build",
-        "model": "openai/gpt-6-luna"
+        "model": "xai/grok-4.6"
       },
       "type": "custom"
     },
@@ -55,6 +57,9 @@
   "diagnostics_max_severity": "all",
   "diff_view_style": "split",
   "edit_predictions": {
+    "copilot": {
+      "enable_next_edit_suggestions": false
+    },
     "disabled_globs": [
       "..."
     ],
