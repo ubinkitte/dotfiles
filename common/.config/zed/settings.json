@@ -9,6 +9,11 @@
     }
   },
   "agent_servers": {
+    "Antigravity": {
+      "type": "custom",
+      "command": "agy",
+      "args": ["acp"]
+    },
     "OpenCode V2": {
       "favorite_config_option_values": {
         "model": [
@@ -18,20 +23,22 @@
           "xai/grok-4.7"
         ]
       },
-      "args": [
-        "acp"
-      ],
+      "args": ["acp"],
       "command": "opencode",
       "default_config_options": {
-        "effort": "medium",
-        "mode": "build",
-        "model": "xai/grok-4.6"
+        "effort": "high",
+        "mode": "plan",
+        "model": "xai/grok-4.6",
       },
-      "type": "custom"
+      "type": "custom",
     },
     "codex-acp": {
-      "type": "registry"
-    }
+      "default_config_options": {
+        "reasoning_effort": "medium",
+        "model": "gpt-6.1-sol",
+      },
+      "type": "registry",
+    },
   },
   "auto_indent_on_paste": true,
   "auto_signature_help": false,
@@ -43,70 +50,64 @@
   "cli_default_open_behavior": "new_window",
   "collaboration_panel": {
     "button": false,
-    "dock": "right"
+    "dock": "right",
   },
   "diagnostics": {
     "include_warnings": true,
     "inline": {
-      "enabled": true
+      "enabled": true,
     },
     "lsp_pull_diagnostics": {
-      "enabled": true
+      "enabled": true,
     }
   },
   "diagnostics_max_severity": "all",
   "diff_view_style": "split",
   "edit_predictions": {
     "copilot": {
-      "enable_next_edit_suggestions": false
+      "enable_next_edit_suggestions": false,
     },
-    "disabled_globs": [
-      "..."
-    ],
+    "disabled_globs": ["..."],
     "mode": "subtle",
-    "provider": "copilot"
+    "provider": "copilot",
   },
   "excerpt_context_lines": 2,
   "expand_excerpt_lines": 5,
   "git_panel": {
     "button": false,
-    "dock": "right"
+    "dock": "right",
   },
   "gutter": {
-    "folds": true
+    "folds": true,
   },
   "hover_popover_enabled": true,
   "hover_popover_sticky": true,
   "icon_theme": "Material Icon Theme",
   "indent_guides": {
-    "enabled": true
+    "enabled": true,
   },
   "inlay_hints": {
     "enabled": false,
     "show_background": false,
-    "show_value_hints": true
+    "show_value_hints": true,
   },
   "inline_code_actions": true,
   "languages": {
     "Python": {
       "completions": {
-        "lsp": true
+        "lsp": true,
       },
       "enable_language_server": true,
-      "language_servers": [
-        "basedpyright",
-        "ruff",
-        "!pyright"
-      ],
-      "show_edit_predictions": true
-    }
+      "language_servers": ["basedpyright", "ruff", "!pyright"],
+      "show_edit_predictions": true,
+    },
   },
   "minimap": {
-    "display_in": "active_editor"
+    "display_in": "active_editor",
   },
   "outline_panel": {
     "button": true,
-    "dock": "right"
+    "dock": "right",
   },
   "project_panel": {
     "bold_folder_labels": false,
@@ -116,15 +117,15 @@
     "hide_hidden": false,
     "hide_root": true,
     "indent_guides": {
-      "show": "always"
+      "show": "always",
     },
     "scrollbar": {
-      "show": "auto"
-    }
+      "show": "auto",
+    },
   },
   "proxy": "",
   "scrollbar": {
-    "diagnostics": "all"
+    "diagnostics": "all",
   },
   "show_completion_documentation": true,
   "show_completions_on_input": true,
@@ -133,47 +134,47 @@
   "soft_wrap": "editor_width",
   "status_bar": {
     "line_endings_button": true,
-    "show_active_file": false
+    "show_active_file": false,
   },
   "sticky_scroll": {
-    "enabled": false
+    "enabled": false,
   },
   "tab_bar": {
-    "show_pinned_tabs_in_separate_row": false
+    "show_pinned_tabs_in_separate_row": false,
   },
   "tabs": {
     "file_icons": true,
     "git_status": true,
-    "show_close_button": "always"
+    "show_close_button": "always",
   },
   "telemetry": {
     "anthropic_retention": false,
     "diagnostics": false,
-    "metrics": false
+    "metrics": false,
   },
   "terminal": {
     "font_family": "ZedMono Nerd Font",
     "font_size": 12.0,
-    "show_count_badge": false
+    "show_count_badge": false,
   },
   "theme": {
     "dark": "VSCode Dark Modern",
     "light": "One Light",
-    "mode": "dark"
+    "mode": "dark",
   },
   "title_bar": {
     "button_layout": "platform_default",
     "show_branch_status_icon": false,
-    "show_menus": true
+    "show_menus": true,
   },
   "toolbar": {
     "agent_review": true,
     "breadcrumbs": true,
     "quick_actions": true,
-    "selections_menu": true
+    "selections_menu": true,
   },
   "ui_font_family": ".ZedSans",
   "ui_font_size": 15.0,
   "ui_font_weight": 400.0,
-  "vertical_scroll_margin": 3.0
+  "vertical_scroll_margin": 3.0,
 }
