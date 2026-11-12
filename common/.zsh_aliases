@@ -1,4 +1,5 @@
 # shell
+alias ..='cd ..'
 alias ll='ls -l'
 alias la='ls -la'
 alias rm='rm -i'
@@ -97,3 +98,5 @@ fkill() {
     [[ -n "$pids" ]] && echo "$pids" | xargs kill "$signal" \
       && echo "killed: $pids"
 }
+
+[[ -r "$HOME/.zsh_ccd_command" ]] && source "$HOME/.zsh_ccd_command"

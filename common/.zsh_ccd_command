@@ -1,0 +1,36 @@
+autoload -Uz add-zsh-hook
+
+_ccd_record() {
+    local root
+    root="$(git rev-parse --show-toplevel 2>/dev/null)" || return
+    print -r -- "$root" >> "$HOME/.ccd_history"
+
+    # 直近500件だけ保持
+    tail -n 500 "$HOME/.ccd_history" > "$HOME/.ccd_history.tmp"
+    command mv "$HOME/.ccd_history.tmp" "$HOME/.ccd_history"
+}
+
+add-zsh-hook chpwd _ccd_record
+
+ccd() {
+    local target
+
+    [[ -s "$HOME/.ccd_history" ]] || return
+
+    target="$(
+        sort "$HOME/.ccd_history" |
+        uniq -c |
+        sort -nr |
+        sed -E 's/^ *[0-9]+ //' |
+        fzf
+    )" || return
+
+    if [[ -n "$target" && -d "$target" ]]; then
+        builtin cd -- "$target" || return
+        if [[ -z "$(git status --porcelain)" ]]; then
+            git pull --ff-only
+        fi
+    fi
+}
+
+_ccd_record
