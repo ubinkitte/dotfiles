@@ -3,7 +3,7 @@ set -eu
 
 DOTFILES="$HOME/dotfiles/common"
 
-for file in .zshrc .zsh_aliases .zsh_exports .zprofile .zshenv; do
+for file in .zshrc .zsh_aliases .zsh_exports .zprofile .zshenv .zsh_ccd_command; do
     ln -sf "$DOTFILES/$file" "$HOME/$file"
 done
 
