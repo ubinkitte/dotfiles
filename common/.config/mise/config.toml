@@ -1,16 +1,11 @@
 [tools]
 # Language runtimes
-
-## JavaScript / TypeScript
 node = "latest"
 pnpm = "latest"
-
-## Python
 python = "latest"
 uv = "latest"
-
-## Go
 go = "latest"
+java = "temurin-17"
 
 # CLI tools
 bat = "latest"
@@ -24,3 +19,5 @@ micro = "latest"
 neovim = "latest"
 
 starship = "latest"
+direnv = "latest"
+duckdb = "latest"
