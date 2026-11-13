@@ -12,5 +12,19 @@
 	smudge = git-lfs smudge -- %f
 [push]
 	default = current
+
+[init]
+	defaultBranch = main
+[pull]
+	ff = only
+
 [core]
-	quotePath = false
+quotePath = false
+pager = delta
+
+[interactive]
+diffFilter = delta --color-only
+
+[delta]
+navigate = true
+line-numbers = true

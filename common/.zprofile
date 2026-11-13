@@ -9,6 +9,3 @@ if [[ -d /opt/homebrew/opt/rustup/bin ]]; then
 elif [[ -d /usr/local/opt/rustup/bin ]]; then
   export PATH="/usr/local/opt/rustup/bin:$PATH"
 fi
-
-# Added by Antigravity CLI installer
-export PATH="/Users/ubinkitte/.local/bin:$PATH"

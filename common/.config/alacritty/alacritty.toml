@@ -1,8 +1,8 @@
 [window]
 padding = { x = 6, y = 4 }
-opacity = 0.4
+opacity = 0.8
 # I think labwc does not support blur
-blur = false
+blur = false 
 
 [font]
 normal = { family = "ZedMono Nerd Font", style = "Regular" }
@@ -21,3 +21,8 @@ blue = "#89b4fa"
 magenta = "#f5c2e7"
 cyan = "#94e2d5"
 white = "#bac2de"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"

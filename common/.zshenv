@@ -1,29 +1,35 @@
 # Locale
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US:en
+
 case "$OSTYPE" in
-  linux*)
-    [[ "$LC_CTYPE" == UTF-8 ]] && unset LC_CTYPE
-    ;;
+    linux*)
+        [[ "$LC_CTYPE" == UTF-8 ]] && unset LC_CTYPE
+        ;;
 esac
+
+# PATH
+typeset -U path PATH
+
+# User binaries
+path=("$HOME/.local/bin" $path)
 
 # Homebrew
 export HOMEBREW_NO_ENV_HINTS=1
 
-# fzf
-if [[ -x "$HOME/.fzf/bin/fzf" ]]; then
-    export PATH="$PATH:$HOME/.fzf/bin"
-fi
-
-# User binaries
-export PATH="$HOME/.local/bin:$PATH"
-
 # Rust
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
-export ANDROID_HOME="$HOME/Library/Android/sdk"
-export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
+# Android SDK
+case "$OSTYPE" in
+    darwin*) sdk_path="$HOME/Library/Android/sdk" ;;
+    linux*)  sdk_path="$HOME/Android/Sdk" ;;
+    *)       sdk_path="" ;;
+esac
 
-# Added by Antigravity CLI installer
-export PATH="/Users/ubinkitte/.local/bin:$PATH"
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+if [[ -n "$sdk_path" && -d "$sdk_path" ]]; then
+    export ANDROID_HOME="$sdk_path"
+    path=("$ANDROID_HOME/emulator" "$ANDROID_HOME/platform-tools" $path)
+fi
+
+unset sdk_path

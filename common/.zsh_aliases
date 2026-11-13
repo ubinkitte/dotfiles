@@ -88,7 +88,7 @@ fi
 
 ## fzf-based functions
 fkill() {
-    local signal="${1:--9}"
+    local signal="${1:--TERM}"
     local pids
     pids=$(ps -ef \
       | sed 1d \
