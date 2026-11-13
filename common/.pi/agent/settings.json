@@ -1,0 +1,29 @@
+{
+  "$schema": "https://pi.dev/schemas/settings.schema.json",
+  "lastChangelogVersion": "1.5.2",
+  "defaultTools": [
+    "+grep",
+    "+find",
+    "+ls",
+    "+codemode",
+    "+tool_search"
+  ],
+  "codemode": {
+    "mode": "on"
+  },
+  "enableInstallTelemetry": false,
+  "hideThinkingBlock": false,
+  "showCacheMissNotices": true,
+  "defaultProjectTrust": "ask",
+  "packages": [
+    "npm:pi-web-access",
+    "npm:@narumitw/pi-usage",
+    "npm:pi-lens"
+  ],
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:pi-web-access\",\"scope\":\"user\"}": "0.47.0",
+    "{\"source\":\"npm:@narumitw/pi-usage\",\"scope\":\"user\"}": "0.69.3",
+    "{\"source\":\"npm:pi-lens\",\"scope\":\"user\"}": "4.4.12"
+  },
+  "contextCap": 272000
+}
